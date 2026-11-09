@@ -15,6 +15,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+// MSYS2's ctype.h defines _L as a character-classification macro, which conflicts
+// with source identifiers such as the _L template/function parameter.
+#ifdef _L
+#undef _L
+#endif
+
 #if defined(_M_X64) || defined(_M_AMD64) || defined(__x86_64__)
 #define FREEARC_64BIT
 #endif
@@ -251,7 +257,9 @@ static inline void WINAPI UnixTimeToFileTime (time_t time, FILETIME* ft)
 #include <sys/types.h>
 #include <utime.h>
 
+#ifndef __cdecl
 #define __cdecl
+#endif
 #define SSIZE_T ssize_t
 
 typedef char* CFILENAME;
@@ -265,7 +273,9 @@ typedef char  TCHAR;
 #define _tcslen         strlen
 #define	_tcslwr		strlwr
 #define _tstat          stat
+#ifndef _stat
 #define _stat           stat
+#endif
 #define _trmdir         rmdir
 #define _trename        rename
 #define _tremove        remove

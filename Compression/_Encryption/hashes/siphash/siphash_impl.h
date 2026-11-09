@@ -21,7 +21,7 @@
 	#include <stdint.h>
 	#include <stdlib.h>
 
-	#define INLINE __attribute__((always_inline))
+	#define INLINE inline __attribute__((always_inline))
 	#define ROTL64(a,b) (((a)<<(b))|((a)>>(64-b)))
 	#define MM16 __attribute__((aligned(16)))
 #endif

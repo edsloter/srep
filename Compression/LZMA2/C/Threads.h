@@ -2,7 +2,7 @@
 extern "C" {
 #endif
 
-#ifdef _WIN32
+#if defined(FREEARC_WIN)
 #include "ThreadsWin32.h"
 #else
 #include "ThreadsUnix.h"

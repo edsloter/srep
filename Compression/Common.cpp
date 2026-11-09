@@ -1,4 +1,6 @@
+#ifdef FREEARC_WIN
 #define _WIN32_WINNT 0x0500
+#endif
 #include <stdlib.h>
 #include "Common.h"
 #include "Compression.h"
@@ -468,10 +470,18 @@ CFILENAME GetTempDir (void)
     GetTempPathW(MY_FILENAME_MAX, TempDir);
     realloc (TempDir, (_tcslen(TempDir)+1) * sizeof(*TempDir));
 #else
-    TempDir = tempnam(NULL,NULL);
-    CFILENAME basename = drop_dirname(TempDir);
-    if (basename > TempDir)
-      basename[-1] = '\0';
+    const char *tmpdir = getenv("TMPDIR");
+    if (!tmpdir || !*tmpdir)  tmpdir = getenv("TMP");
+    if (!tmpdir || !*tmpdir)  tmpdir = getenv("TEMP");
+    if (!tmpdir || !*tmpdir)
+    {
+#ifdef P_tmpdir
+      tmpdir = P_tmpdir;
+#else
+      tmpdir = "/tmp";
+#endif
+    }
+    TempDir = strdup_msg((char*)tmpdir);
 #endif
   }
   return TempDir;
@@ -976,7 +986,11 @@ double GetCPUTime (void)
 double GetThreadCPUTime (void)
 {
   struct rusage usage;
+#ifdef RUSAGE_THREAD
   int res = getrusage (RUSAGE_THREAD, &usage);
+#else
+  int res = getrusage (RUSAGE_SELF, &usage);
+#endif
   return res? -1 : (usage.ru_utime.tv_sec + ((double)usage.ru_utime.tv_usec) / 1000000);
 }
 #endif // FREEARC_UNIX

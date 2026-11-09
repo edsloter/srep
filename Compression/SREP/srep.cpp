@@ -548,8 +548,8 @@ int main (int argc, char **argv)
       bg_thread.start();
       if (verbosity > 1)
       {
-        char min_match_str[100], L_str[100], l_c_t_str[100], l_c_a_str[100], hashname_str[100], bufsize_str[100];
-        char dictsize_str[100], dict_hashsize_str[100], dict_compressor_str[100], dict_min_match_str[100], dict_chunk_str[100];
+        char min_match_str[100], L_str[100], l_c_t_str[300], l_c_a_str[300], hashname_str[100], bufsize_str[100];
+        char dictsize_str[100], dict_hashsize_str[100], dict_compressor_str[512], dict_min_match_str[100], dict_chunk_str[100];
 
         showMem (bufsize, bufsize_str);  showMem (dictsize, dictsize_str);  showMem (inmem.hashsize, dict_hashsize_str);
         showMem (min_match, min_match_str, false);  showMem (L, L_str, false);
@@ -675,7 +675,7 @@ print_stats:
           {
             LastGlobalTime = GlobalTime;  last_origsize = origsize;  double CPUTime = GetCPUTime();
             char temp1[100], temp2[100], temp3[100], temp4[100], temp5[100], temp6[100], temp7[100], counters[200];
-            char remains[100], remains0[100], console_title[MY_FILENAME_MAX+100];
+            char remains[200], remains0[100], console_title[MY_FILENAME_MAX+100];
             Offset x = pc.check_len-pc.record_match;
             sprintf (counters, "PC %s+%s+%s  %s%s+%s%s.  ",
                              show3(pc.find_match,temp1), show3(pc.find_match_memaccess,temp2), show3(pc.check_hasharr,temp3),
@@ -826,7 +826,7 @@ print_stats:
             if (processed==origsize || GlobalTime-LastGlobalTime>TimeInterval)
             {
               LastGlobalTime = GlobalTime;
-              char remains[100], remains0[100], text[100], console_title[MY_FILENAME_MAX+100];
+              char remains[100], remains0[100], text[200], console_title[MY_FILENAME_MAX+100];
 
               int percents = int(double(processed)*100/origsize);
               int remain = int(round(double(origsize-processed)/processed * (GlobalTime - OperationStartGlobalTime)));
@@ -1116,7 +1116,7 @@ print_decompression_stats:
         {
           LastGlobalTime = GlobalTime;  last_origsize = origsize;  double CPUTime = GetCPUTime();
           char stats[1000], total_reads_str[100], vm_stats_str[100], temp1[100], temp2[100];
-          char remains[100], remains0[100], console_title[MY_FILENAME_MAX+100];
+          char remains[200], remains0[100], console_title[MY_FILENAME_MAX+100];
 
           int percents = int(double(compsize)*100/filesize);
           int remain = int(round(double(filesize-compsize)/compsize * (GlobalTime - OperationStartGlobalTime)));
