@@ -10,7 +10,7 @@ extern "C"
 #include "../C/Threads.h"
 }
 
-#ifdef _WIN32
+#if defined(FREEARC_WIN)
 #include "Handle.h"
 #endif
 
@@ -30,13 +30,13 @@ protected:
   ::CEvent _object;
 public:
   bool IsCreated() { return Event_IsCreated(&_object) != 0; }
-#ifdef _WIN32
+#if defined(FREEARC_WIN)
   operator HANDLE() { return _object; }
 #endif
   CBaseEvent() { Event_Construct(&_object); }
   ~CBaseEvent() { Close(); }
   WRes Close() { return Event_Close(&_object); }
-  #ifdef _WIN32
+  #if defined(FREEARC_WIN)
   WRes Create(bool manualReset, bool initiallyOwn, LPCTSTR name = NULL,
       LPSECURITY_ATTRIBUTES securityAttributes = NULL)
   {
@@ -75,7 +75,7 @@ public:
       return 0;
     return ManualResetEvent_CreateNotSignaled(&_object);
   }
-  #ifdef _WIN32
+  #if defined(FREEARC_WIN)
   WRes CreateWithName(bool initiallyOwn, LPCTSTR name)
   {
     return CBaseEvent::Create(true, initiallyOwn, name);
@@ -106,7 +106,7 @@ public:
   Semaphore() { Semaphore_Construct(&_object); }
   ~Semaphore() { Close(); }
   WRes Close() {  return Semaphore_Close(&_object); }
-#ifdef _WIN32
+#if defined(FREEARC_WIN)
   operator HANDLE() { return _object; }
 #endif
   WRes Create(UInt32 initiallyCount, UInt32 maxCount)
